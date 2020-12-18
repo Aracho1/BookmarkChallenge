@@ -12,3 +12,4 @@ gem 'simplecov', require: false
 gem 'simplecov-console', require: false
 gem 'pg'
 gem 'shotgun'
+gem 'sinatra-flash'
