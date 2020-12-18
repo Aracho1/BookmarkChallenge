@@ -1,13 +1,16 @@
 # frozen_string_literal: true
 
 require 'sinatra/base'
+require 'sinatra/flash'
 require_relative './lib/bookmark.rb'
 require_relative './database_setup.rb'
 require_relative './lib/database_connection.rb'
-require 'sinatra/flash'
+require 'uri'
+
 
 class BookmarkManager < Sinatra::Base
   enable :sessions, :method_override
+  register Sinatra::Flash
 
   get '/' do
     redirect '/bookmarks'
@@ -23,8 +26,12 @@ class BookmarkManager < Sinatra::Base
   end
 
   post '/bookmarks' do
-    Bookmark.add(title: params[:title], url: params[:url])
-    redirect '/bookmarks'
+    if params[:url] =~ URI::regexp
+      Bookmark.add(title: params[:title], url: params[:url])
+      redirect '/bookmarks'
+    else
+      flash[:notice] = "Invalid URL"
+    end
   end
 
   delete '/bookmarks/:id' do
@@ -33,13 +40,17 @@ class BookmarkManager < Sinatra::Base
   end
 
   get '/bookmarks/:id/edit' do
-    @bookmark = Bookmark.find(id: params[:id])
+    @bookmark = Bookmark.find(id: params[:id])      
     erb :edit
   end
 
   patch '/bookmarks/:id' do
-    Bookmark.edit(id: params[:id], title: params[:title], url: params[:url])
-    redirect '/bookmarks'
+    if params[:url] =~ URI::regexp
+      Bookmark.edit(id: params[:id], title: params[:title], url: params[:url])
+      redirect '/bookmarks'
+    else
+      flash[:notice] = "Invalid URL"
+    end
   end
 
   run! if app_file == $PROGRAM_NAME

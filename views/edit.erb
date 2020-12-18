@@ -1,6 +1,13 @@
+<% flash.keys.each do |type| %>
+  <div data-alert class="flash <%=type%> alert-box radius">
+  <%= flash[type] %>
+  <a href="#" class="close">&times;</a>
+  </div>
+<% end %>
+
 <form action="/bookmarks/<%= @bookmark.id %>" method="post">
   <input type="hidden" name="_method" value="PATCH" />
-  <input type="text" name="url" value="<%= @bookmark.url %>" />
   <input type="text" name="title" value="<%= @bookmark.title %>" />
+    <input type="text" name="url" value="<%= @bookmark.url %>" />
   <input type="submit" value="Submit" />
 </form>
