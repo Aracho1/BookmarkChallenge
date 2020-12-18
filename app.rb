@@ -26,12 +26,8 @@ class BookmarkManager < Sinatra::Base
   end
 
   post '/bookmarks' do
-    if params[:url] =~ URI::regexp
-      Bookmark.add(title: params[:title], url: params[:url])
-      redirect '/bookmarks'
-    else
-      flash[:notice] = "Invalid URL"
-    end
+    flash[:notice] = "Invalid URL" unless Bookmark.add(title: params[:title], url: params[:url])
+    redirect '/bookmarks'
   end
 
   delete '/bookmarks/:id' do
@@ -45,12 +41,8 @@ class BookmarkManager < Sinatra::Base
   end
 
   patch '/bookmarks/:id' do
-    if params[:url] =~ URI::regexp
-      Bookmark.edit(id: params[:id], title: params[:title], url: params[:url])
-      redirect '/bookmarks'
-    else
-      flash[:notice] = "Invalid URL"
-    end
+    flash[:notice] = "Invalid URL" unless Bookmark.add(title: params[:title], url: params[:url])
+    redirect '/bookmarks'
   end
 
   run! if app_file == $PROGRAM_NAME
