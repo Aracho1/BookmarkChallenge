@@ -3,8 +3,10 @@ feature "updating bookmarks" do
     visit('bookmarks')
     click_button('Add Bookmark')
     fill_in 'title', with:'Aamazon'
-    fill_in 'url', with:'amazon.co.uk'
+    fill_in 'url', with:'http://www.amazon.com'
     click_button('Add')
-    expect(page).to have_button('Edit')
+    click_button('Edit')
+    expect(page).to have_field('title')
+    expect(page).to have_field('url')
   end
 end
