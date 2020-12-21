@@ -2,9 +2,11 @@
 
 require 'sinatra/base'
 require 'sinatra/flash'
+
 require_relative './lib/bookmark'
 require_relative './lib/comment'
 require_relative './lib/tag'
+require_relative './lib/user'
 require_relative './database_setup'
 require_relative './lib/database_connection'
 require 'uri'
@@ -16,7 +18,19 @@ class BookmarkManager < Sinatra::Base
   register Sinatra::Flash
 
   get '/' do
-    redirect '/bookmarks'
+    erb :index
+  end
+
+  post '/login' do
+
+  end
+
+  get '/signup' do
+    erb :signup
+  end
+
+  post '/signup' do
+    
   end
 
   get '/bookmarks' do
