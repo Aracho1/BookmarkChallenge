@@ -1,4 +1,6 @@
-<h1>Bookmark Manager</h1>
+<% if @user %>
+<h1>Welcome, <%= @user.username %></h1>
+<% end %>
 
 <div class="tags">
 <h2>Filter by Tag</h2>
@@ -58,4 +60,8 @@
 
 <form action='/tag' method="get">
   <input type='submit' value='Create a new tag'>
+</form>
+
+<form action='/logout' method="post">
+  <input type='submit' value='Log out'>
 </form>

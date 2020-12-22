@@ -22,7 +22,14 @@ class BookmarkManager < Sinatra::Base
   end
 
   post '/login' do
-
+    user = User.authenticate(params[:username], params[:password])
+    if user
+      session[:username] = params[:username]
+      redirect '/bookmarks'
+    else
+      flash[:notice] = "Invalid username or password"
+      redirect '/'
+    end
   end
 
   get '/signup' do
@@ -30,10 +37,13 @@ class BookmarkManager < Sinatra::Base
   end
 
   post '/signup' do
-    
+    user = User.create(params[:username], params[:password])
+    flash[:notice] = "Sign up complete. Please log in."
+    redirect '/'
   end
 
   get '/bookmarks' do
+    @user = User.find(session[:username])
     @bookmarks = Bookmark.all
     @tags = Tag.all
     erb :bookmarks, :layout => :layout
@@ -85,6 +95,11 @@ class BookmarkManager < Sinatra::Base
   get '/tag/:id' do
     @bookmarks = Bookmark.sort_by_tag(tag_id: params[:id])
     erb :bookmarks_tag
+  end
+
+ post '/logout' do
+    session.clear
+    redirect '/'
   end
 
   run! if app_file == $PROGRAM_NAME
